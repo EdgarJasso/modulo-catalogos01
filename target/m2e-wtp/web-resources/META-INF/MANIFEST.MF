@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: ejasso
+Build-Jdk: 17.0.7
+Implementation-Title: Portal App
+Implementation-Version: 0.0.1
+Implementation-Vendor-Id: com.portal
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-boot
+ -starter-parent/app
+Created-By: Maven Integration for Eclipse
+
