@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
-Built-By: ejasso
-Build-Jdk: 17.0.7
+Built-By: onofre
+Build-Jdk: 11.0.12
 Implementation-Title: Portal App
 Implementation-Version: 0.0.1
 Implementation-Vendor-Id: com.portal

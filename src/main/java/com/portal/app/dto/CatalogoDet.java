@@ -13,8 +13,8 @@ import javax.persistence.Table;
 public class CatalogoDet {
 
 	@Id
-	@SequenceGenerator(name = "SEQ_CATALOGO_DET", sequenceName="SEQ_CATALOGO_DET") 
-	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ_CATALOGO_DET")
+	@SequenceGenerator(name = "SEQ_CATALOGO_DET_GEN", sequenceName="SEQ_CATALOGO_DET") 
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ_CATALOGO_DET_GEN")
 	@Column private Long	catd_id_n;
 	@Column private Long	cat_id_n;
 	@Column private String	catd_cve_str;

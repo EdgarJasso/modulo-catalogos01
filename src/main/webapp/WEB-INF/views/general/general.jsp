@@ -24,9 +24,8 @@ var $general = {};
 	const nvaUsr = $portal.user.profile.nva_id_n;
 	const nvaMenu = $portal.menu.nva_id_n;
 	
-	let catalogoPadre = 0;
-	let catalogoPadreTitle = "";
-	let idDC = 0;
+	this.catalogoPadre = 0;
+	this.catalogoPadreTitle = "";
 	
 	this.optionsFormatter = function(value,row)
 	{	
@@ -72,8 +71,25 @@ var $general = {};
 		}
 	};
 	
-	function updateEstatus(id,estatus){
-		inactiveForm();
+	function updateGeneral(id)
+	{
+		$general.catalogoPadre = $("#f_categoria").val();
+		$general.catalogoPadreTitle = $('#f_categoria option:selected').text();
+		
+		$("#divFormContainer").html("");
+		app.loading = $portal.dialog.loading().open();
+		
+		$portal.system.getForm({url:$base+"/updateForm",data:{id:id} })
+		.done((form)=>
+		{
+			$("#divFormContainer").html(form); 
+			$("#divFormContainer").show();
+		}).always( ()=> { app.loading.close(); });
+		
+	}
+	
+	function updateEstatus(id,estatus)
+	{
 		let loading = $portal.dialog.loading().open();
 		$portal.system.service
 		({	url:"updateEstatusCatalogoDet",
@@ -84,39 +100,6 @@ var $general = {};
 			}
 		}).always(()=>{ loading.close(); });
 	}
-	
-	function updateGeneral(id){
-		idDC = id;
-		$("#f_btnSave").hide();
-		$("#f_btnUpate").show();
-		let row = $general.table.getRow(idDC);
-		//console.log(row);
-		activeForm();
-		catalogoPadre = $("#f_categoria").val();
-		catalogoPadreTitle = $('#f_categoria option:selected').text();
-		$("#catDIdN").val(row.catd_id_n);
-		$("#catIdN").val(row.cat_id_n);
-		$("#f_gen_idcat_str").val(catalogoPadreTitle);
-		$("#catDCveStr").val(row.catd_cve_str);
-		$("#catDescStr").val(row.catd_desc_str);
-		$("#catEstStr").val(row.catd_est_str);
-	}
-	
-	
-	this.addGeneral =(btn)=>{
-		inactiveForm();
-		$portal.system.blockButton(btn);	
-		catalogoPadre = $("#f_categoria").val();
-		catalogoPadreTitle = $('#f_categoria option:selected').text();
-		
-		if(catalogoPadre > 0){
-			activeForm();	
-			$("#f_btnSave").show();
-			$("#f_btnUpate").hide();
-		}else{
-			$portal.dialog.warning("Seleccione una categoria válida para poder agregar un nuevo registro");
-		}
-	};
 	
 	function toolbarButtons(){
 		return {
@@ -140,22 +123,21 @@ var $general = {};
 		loadData();
 	};
 	
-	function loadData(){
-		catalogoPadre = $("#f_categoria").val();
+	function loadData()
+	{
+		$general.table.setData([]);
+		$general.catalogoPadre = $("#f_categoria").val();
 		
-		if(catalogoPadre > 0){
-			let loading = $portal.dialog.loading().open();
-			
-			$portal.system.service
-			({	url:"getCatalogoDet",
-				data:{catIdN:catalogoPadre},
-				callback:(r)=>{
-					$general.table.setData(r.catalogoDet);
-				}
-			}).always(()=>{ loading.close(); });	
-		}else{
-			$general.table.setData([]);
-		}
+		if($general.catalogoPadre < 0){ return; }
+		
+		let loading = $portal.dialog.loading().open();
+		$portal.system.service
+		({	url:"getCatalogoDet",
+			data:{catIdN: $general.catalogoPadre},
+			callback:(r)=>{
+				$general.table.setData(r.catalogoDet);
+			}
+		}).always(()=>{ loading.close(); });
 	}
 
 	function loadGeneralStore(){
@@ -176,119 +158,52 @@ var $general = {};
 		});	
 	}
 	
-	function saveGeneral(){
-		$portal.system.blockButton($(this));
-		let obj = validateForm(0);
-		//console.log(obj);
-		if(obj.validate){
-			let loading = $portal.dialog.loading().open();
-			$portal.system.service
-			({	url:"saveCatalogoDet",
-				data:obj,
-				callback:(r)=>{	
-					console.log(r);
-				}
-			}).always(()=>{ 
-				loading.close();
-				loadData();
-				inactiveForm();
-			});
+	
+	this.addGeneral =(btn)=>
+	{
+		$portal.system.blockButton(btn);	
+		$general.catalogoPadre = $("#f_categoria").val();
+		$general.catalogoPadreTitle = $('#f_categoria option:selected').text();
+		
+		if($general.catalogoPadre < 0)
+		{
+			$portal.dialog.warning("Seleccione una categoria válida para poder agregar un nuevo registro");
+			return false;
 		}
-	}
-	
-	function _updateGeneral(){
-		$portal.system.blockButton($(this));
-		let obj = validateForm(1);
-		//console.log(obj);
-		if(obj.validate){
-			let loading = $portal.dialog.loading().open();
-			$portal.system.service
-			({	url:"updateCatalogoDet",
-				data:obj,
-				callback:(r)=>{	
-					console.log(r);
-				}
-			}).always(()=>{ 
-				loading.close();
-				loadData();
-				inactiveForm();
-			});
-		}
-	}
-	
-	function validateForm(tipo){
-		let form = $("#form_addGeneral");
-		$portal.system.cleanForm( form );
 		
-		let objToFocus = null;
-		let obj = $portal.system.serialize(form);
-		//console.log(obj);
-		//obj.app_id_n = $rowId;
-		obj.validate = true;
-		$.each(obj,(id,value)=>
-		{	//console.log(id, value);
-			if( $("#"+id).prop('required') && obj[id] == null) 
-			{	
-				obj.validate = false;
-				
-				$portal.system.markAsError( $("#"+id) ,null, null );
-				objToFocus = objToFocus==null ? $("#"+id) : objToFocus;
-			}	
-		});
+		$("#divFormContainer").html("");
+		app.loading = $portal.dialog.loading().open();
 		
-		if( objToFocus != null ) { objToFocus.focus(); } 
+		$portal.system.getForm({url:$base+"/addForm"})
+		.done((form)=>
+		{
+			$("#divFormContainer").html(form); 
+			$("#divFormContainer").show();
+		}).always( ()=> { app.loading.close(); });
 		
-		return obj;
-	}
+	};
 	
-	function activeForm(){
-		$("#divFormContainer").show();
-		$("#catIdN").val(catalogoPadre);
-		$("#f_gen_idcat_str").val(catalogoPadreTitle);
-		$("#catDCveStr").focus();	
-	}
-	
-	function inactiveForm(){
-		$("#divFormContainer").hide();
-		
-		$("#f_btnSave").hide();
-		$("#f_btnUpate").hide();
-		
-		$("#catIdN").val("");
-		$("#catDIdN").val("");
-		$("#f_gen_idcat_str").val("");
-		$("#catDCveStr").val("");
-		$("#catDescStr").val("");
-		$("#catEstStr").val("");
-	}
-	
-	function initMenu(){
+	function initMenu()
+	{
 		$("#f_categoria").html(generalOptions);
 		$("#f_categoria").selectpicker({width:'100%'}); 
 		$("#f_categoria").change(loadData);
-		$("#f_categoria").change(inactiveForm);
 		
 		$general.table = $("#table_"+$base);
 		$portal.system.setTable({table:$general.table,toolbarButtons:toolbarButtons()});	
-		
-		$("#f_btnSave").click(saveGeneral);
-		$("#f_btnUpate").click(_updateGeneral);
 	}
 	
-	this.init = ()=> {	
-		$("#divFormContainer").hide();
+	this.init = ()=> 
+	{	
 		app.loading = $portal.dialog.loading().open();
 		
 		$.when( $portal.system.getForm({url:$base+"/filtro"}),
 				$portal.system.getForm({url:$base+"/table"}),
-				$portal.system.getForm({url:$base+"/form"}),
 				loadGeneralStore()
-				/*, loadNvaStore()*/
-		).done((filtroTemplate,tableTemplate, formTemplate)=>
+		).done((filtroTemplate,tableTemplate)=>
 		{
 			$("#divFiltro").html(filtroTemplate[0]);
 			$("#divTableContainer").html(tableTemplate[0]);
-			$("#divFormContainer").html(formTemplate[0]);
 			initMenu();			
 		}).always(()=>{ app.loading.close(); });
 	};
@@ -299,12 +214,5 @@ $(document).ready($general.init);
 <div class="panel panel-tema">
 	<div id="divFiltro" class="panel-body padding-0"></div>
 	<hr class="ps-hr-b-0">
-	<div>
-		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
-			<div id="divTableContainer" class="panel-body padding-0"></div>
-		</div>
-		<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-			<div id="divFormContainer" class="panel-body padding-0"></div>
-		</div>
-	</div>
+	<div id="divTableContainer" class="panel-body padding-0"></div>
 </div>

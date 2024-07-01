@@ -72,9 +72,12 @@ public class GeneralDaoImpl implements GeneralDao
 		catalogoDet.setCat_id_n(request.getCatIdN());
 		catalogoDet.setCatd_cve_str(request.getCatDCveStr());
 		catalogoDet.setCatd_desc_str(request.getCatDescStr());
-		catalogoDet.setCatd_est_str("A");
-		log.debug("catalogoDet:"+new Gson().toJson(catalogoDet));
+		catalogoDet.setCatd_est_str(request.getCatEstStr());
+		
 		session.getCurrentSession().save(catalogoDet);
+		
+		log.debug("catalogoDet:"+new Gson().toJson(catalogoDet));
+		
 	return "Proceso realizado";
 	}
 
