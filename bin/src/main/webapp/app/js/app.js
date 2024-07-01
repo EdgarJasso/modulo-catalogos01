@@ -1,1 +1,0 @@
-var app = {}; (function(){ }).apply(app);
