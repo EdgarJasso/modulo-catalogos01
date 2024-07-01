@@ -213,7 +213,7 @@ var $general = {};
 }).apply($general);
 $(document).ready($general.init);
 </script>
-
+<div id="div-dismiss-container" class="col-lg-12" style="padding: 0px; margin: 0px;"></div>
 <div class="panel panel-tema">
 	<div id="divFiltro" class="panel-body padding-0"></div>
 	<hr class="ps-hr-b-0">

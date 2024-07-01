@@ -14,6 +14,8 @@ var $general_addForm = {};
 				$("#divFormContainer").hide();
 				$("#divFormContainer").html("");
 				$general.refreshData();
+				$portal.dialog.infoDismiss({message:"Clave <span class='pcolor-red'>"
+					+obj.catDCveStr +" - "+ obj.catDescStr+" </span> registrada" });
 			}
 		}).always(()=>{ loading.close(); });
 	}
