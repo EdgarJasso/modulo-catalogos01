@@ -1,6 +1,8 @@
 package com.portal.app;
 
 import java.util.Properties;
+import java.util.concurrent.Executor;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.codec.binary.Base64;
@@ -19,12 +21,16 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.context.annotation.Bean;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.portal.app.util.AppInfo;
+import com.portal.app.util.Contador;
 
+@EnableAsync
 @EnableTransactionManagement
 @SpringBootApplication
 @EnableAutoConfiguration(exclude={	DataSourceAutoConfiguration.class,
@@ -148,6 +154,24 @@ public class AppConfig implements WebMvcConfigurer
 		appInfo.setDeveloper(appDeveloper);
 		appInfo.setResources(proxyEnabled?proxyServer:resourcesUrl);
 		return appInfo;
+	}
+	
+	@Bean(name = "cpExecutor")
+    public Executor threadPoolTaskExecutor() 
+    {
+		ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
+		threadPoolTaskExecutor.setCorePoolSize(75);
+		threadPoolTaskExecutor.setMaxPoolSize(100);
+		
+        return threadPoolTaskExecutor;
+    }
+	
+	@Bean
+	public Contador contadorBean()
+	{
+		Contador c = new Contador();
+		c.setValor(0L);
+		return c;
 	}
 	
 	public static void main(String[] args) 
