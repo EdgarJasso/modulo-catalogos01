@@ -125,6 +125,9 @@ var $general = {};
 	
 	function loadData()
 	{
+		$("#divFormContainer").hide();
+		$("#divFormContainer").html("");
+		
 		$general.table.setData([]);
 		$general.catalogoPadre = $("#f_categoria").val();
 		

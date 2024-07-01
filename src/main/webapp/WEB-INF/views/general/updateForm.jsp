@@ -123,7 +123,7 @@ $(document).ready($general_addForm.init);
 		<div class="form-group" style="padding-right: 15px;">
 			<div class="form-group" >
 				<div class="col-xs-12 col-sm-4 col-sm-offset-8">
-					<button id="f_btnSave" class="btn btn-primary form-control" > Registrar</button>
+					<button id="f_btnSave" class="btn btn-primary form-control" > Actualizar</button>
 				</div>
 			</div>
 		</div>
