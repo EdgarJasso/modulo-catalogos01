@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script type="text/javascript">
 var $general_addForm = {};
-(function()
-{
+(function(){
+
+	const $base = "general";
 	const $rowId = '${object.id}'; 
 	const $row = $general.table.getRow($rowId);
 	
@@ -10,7 +11,7 @@ var $general_addForm = {};
 	{
 		let loading = $portal.dialog.loading().open();
 		$portal.system.service
-		({	url:"updateCatalogoDet",
+		({	url:$base+"/update",
 			data: obj,
 			callback:function(r)
 			{	
@@ -18,7 +19,7 @@ var $general_addForm = {};
 				$("#divFormContainer").html("");
 				$general.refreshData();
 				$portal.dialog.infoDismiss({message:"Clave <span class='pcolor-red'>"
-					+obj.catDCveStr +" - "+ obj.catDescStr+" </span> actualizada" });
+					+obj.clave +" - "+ obj.desc+" </span> actualizada" });
 			}
 		}).always(()=>{ loading.close(); });
 	}
@@ -53,15 +54,15 @@ var $general_addForm = {};
 	this.init = ()=>
 	{
 		$("#f_btnSave").off("click"); 
-		setTimeout( ()=>{ $("#catDCveStr").focus(); },500);
-		$("#f_gen_idcat_str").val( $general.catalogoPadreTitle );
+		setTimeout( ()=>{ $("#clave").focus(); },500);
+		$("#padreStr").val( $general.catalogoPadreTitle );
 		
-		$("#catDCveStr").val($row.catd_cve_str);
-		$("#catDescStr").val($row.catd_desc_str);
+		$("#clave").val($row.catd_cve_str);
+		$("#desc").val($row.catd_desc_str);
 		
-		try{ $("#catEstStr").selectpicker('destroy');  }catch(e){}
-		$("#catEstStr").selectpicker({width:'100%'}); 
-		$("#catEstStr").selectpicker('val',$row.catd_est_str); 
+		try{ $("#estatus").selectpicker('destroy');  }catch(e){}
+		$("#estatus").selectpicker({width:'100%'}); 
+		$("#estatus").selectpicker('val',$row.catd_est_str); 
 		
 		$("#f_btnSave").click((e)=>
 		{ 
@@ -85,7 +86,7 @@ $(document).ready($general_addForm.init);
 				Categoria:
 			</label>
 			<div class="col-xs-12 col-sm-9">
-				<input class="form-control" id="f_gen_idcat_str" name="f_gen_idcat_str" readonly="readonly">
+				<input class="form-control" id="padreStr" name="padreStr" readonly="readonly">
 			</div>
 		</div>
 		
@@ -96,14 +97,14 @@ $(document).ready($general_addForm.init);
 				<span class="form-span-error"></span>
 			</label>
 			<div class="col-xs-12 col-sm-4">
-				<input class="form-control" id="catDCveStr" name="catDCveStr" maxlength="50" required="required">
+				<input class="form-control" id="clave" name="clave" maxlength="50" required="required">
 			</div>
 			
 			<label class="col-xs-12 col-sm-2  control-label lbl-form">
 				Estatus:
 			</label>
 			<div class="col-xs-12 col-sm-3">
-				<select class="form-control" id="catEstStr" name="catEstStr">
+				<select class="form-control" id="estatus" name="estatus">
 					<option selected="selected" data-icon="fa fa-square pcolor-green" value="A"> Activo</option>
 					<option data-icon="fa fa-square pcolor-red" value="I"> Inactivo</option>
 				</select>
@@ -118,7 +119,7 @@ $(document).ready($general_addForm.init);
 				<span class="form-span-error"></span>
 			</label>
 			<div class="col-xs-12 col-sm-9">
-				<input class="form-control" id="catDescStr" name="catDescStr" maxlength="100" required="required">
+				<input class="form-control" id="desc" name="desc" maxlength="100" required="required">
 			</div>
 		</div>
 		

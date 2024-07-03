@@ -88,7 +88,7 @@ public class GeneralServiceImpl implements GeneralService
 		log.info("catalogoUpdateEstatus:"+new Gson().toJson(request));
 		GeneralResponse response = new GeneralResponse();
 		try {
-			dao.catalogoUpdate(request);
+			dao.catalogoUpdateEstatus(request);
 			response.setCatalogoDet(dao.catalogoListByID(request));
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

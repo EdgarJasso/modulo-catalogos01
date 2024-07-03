@@ -105,29 +105,7 @@ var $general = {};
 		loadData();
 	};
 	
-	this.addGeneral =(btn)=>
-	{
-		$portal.system.blockButton(btn);	
-		$general.catalogoPadre = $("#f_categoria").val();
-		$general.catalogoPadreTitle = generalMap[$general.catalogoPadre].value;
-		
-		if($general.catalogoPadre < 0)
-		{
-			$portal.dialog.warning("Seleccione una categoria válida para poder agregar un nuevo registro");
-			return false;
-		}
-		
-		$("#divFormContainer").html("");
-		app.loading = $portal.dialog.loading().open();
-		
-		$portal.system.getForm({url:$base+"/addForm"})
-		.done((form)=>
-		{
-			$("#divFormContainer").html(form); 
-			$("#divFormContainer").show();
-		}).always( ()=> { app.loading.close(); });
-		
-	};
+	
 	
 	this.optionsFormatter = function(value,row)
 	{	
@@ -172,6 +150,47 @@ var $general = {};
 			case 3: updateGeneral(id);		break;
 		}
 	};
+
+	this.addGeneral =(btn)=>
+	{
+		$portal.system.blockButton(btn);	
+		$general.catalogoPadre = $("#f_categoria").val();
+		$general.catalogoPadreTitle = generalMap[$general.catalogoPadre].value;
+		
+		if($general.catalogoPadre < 0)
+		{
+			$portal.dialog.warning("Seleccione una categoria válida para poder agregar un nuevo registro");
+			return false;
+		}
+		
+		$("#divFormContainer").html("");
+		app.loading = $portal.dialog.loading().open();
+		
+		$portal.system.getForm({url:$base+"/addForm"})
+		.done((form)=>
+		{
+			$("#divFormContainer").html(form); 
+			$("#divFormContainer").show();
+		}).always( ()=> { app.loading.close(); });
+		
+	};
+
+	function updateGeneral(id)
+	{
+		$general.catalogoPadre = $("#f_categoria").val();
+		$general.catalogoPadreTitle = generalMap[$general.catalogoPadre].value;
+		
+		$("#divFormContainer").html("");
+		app.loading = $portal.dialog.loading().open();
+		
+		$portal.system.getForm({url:$base+"/updateForm",data:{id:id} })
+		.done((form)=>
+		{
+			$("#divFormContainer").html(form); 
+			$("#divFormContainer").show();
+		}).always( ()=> { app.loading.close(); });
+		
+	}
 	
 	function updateEstatus(id,estatus)
 	{

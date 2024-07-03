@@ -19,9 +19,7 @@ import com.portal.app.request.GeneralRequest;
 
 @Repository
 @Transactional(readOnly=true,rollbackFor = Exception.class)
-public class GeneralDaoImpl implements GeneralDao
-{
-	private static final Logger log = LoggerFactory.getLogger(GeneralDaoImpl.class);
+public class GeneralDaoImpl implements GeneralDao{
 	
 	@Autowired	private SessionFactory session;
 
@@ -73,17 +71,13 @@ public class GeneralDaoImpl implements GeneralDao
 	@Override
 	@Transactional(readOnly = false)
 	public void catalogoUpdateEstatus(GeneralRequest request) {
-		log.debug("request: " + new Gson().toJson(request) );
 		CatalogoDet catalogoDet = (CatalogoDet) session.getCurrentSession()
 								 .createCriteria(CatalogoDet.class)
 								 .add(Restrictions.eq("catd_id_n", request.getIdDetalle()))
 								 .uniqueResult();
-		log.debug("find: " + new Gson().toJson(catalogoDet) );
 		if(catalogoDet != null) {
 			catalogoDet.setCatd_est_str(request.getEstatus());
 		}
-
-		log.debug("update: " + new Gson().toJson(catalogoDet) );
 	}
 
 	
