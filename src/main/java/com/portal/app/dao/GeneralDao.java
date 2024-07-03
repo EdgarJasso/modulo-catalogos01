@@ -8,12 +8,11 @@ import com.portal.app.request.GeneralRequest;
 
 public interface GeneralDao{
 	
-	public List<Catalogo> getCatalogos(GeneralRequest request);
-	public String saveCatalogo (GeneralRequest request);
-	public String updateCatalogo (GeneralRequest request);
+	List<Catalogo> catalogoList(GeneralRequest request);
 	
-	public List<CatalogoDet> getCatalogosDet(GeneralRequest request);
-	public String saveCatalogoDet (GeneralRequest request);
-	public String updateEstatusCatalogoDet(GeneralRequest request);
-	public String updateCatalogoDet (GeneralRequest request);
+	List<CatalogoDet> catalogoListByID(GeneralRequest request);
+	void catalogoSave (GeneralRequest request);
+	void catalogoUpdate(GeneralRequest request);
+	void catalogoUpdateEstatus(GeneralRequest request);
+
 }

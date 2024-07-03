@@ -3,6 +3,7 @@ package com.portal.app.dao.impl;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,14 +12,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
-import com.portal.app.dao.AppDao;
 import com.portal.app.dao.GeneralDao;
 import com.portal.app.dto.Catalogo;
 import com.portal.app.dto.CatalogoDet;
-import com.portal.app.request.AppRequest;
 import com.portal.app.request.GeneralRequest;
-import com.portal.app.response.AppResponse;
-import com.portal.app.response.GeneralResponse;
 
 @Repository
 @Transactional(readOnly=true,rollbackFor = Exception.class)
@@ -30,86 +27,65 @@ public class GeneralDaoImpl implements GeneralDao
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Catalogo> getCatalogos(GeneralRequest request) {
-		return session.getCurrentSession().createCriteria(Catalogo.class).list();
+	public List<Catalogo> catalogoList(GeneralRequest request) {
+		return session.getCurrentSession().createCriteria(Catalogo.class)
+				.add(Restrictions.eq("cat_est_str", "A"))
+				.addOrder(Order.asc("cat_id_n"))
+				.list();
 	}
-
-	@Override
-	@Transactional(readOnly = false)
-	public String saveCatalogo(GeneralRequest request) {
-		Catalogo catalogo = new Catalogo();
-			catalogo.setCat_desc_str(request.getCatDescStr());
-			catalogo.setCat_est_str("A");
-		session.getCurrentSession().save(catalogo);
-		return "Proceso realizado";
-	}
-
-	@Override
-	@Transactional(readOnly = false)
-	public String updateCatalogo(GeneralRequest request) {
-		Catalogo catalogo = (Catalogo) session.getCurrentSession().createCriteria(Catalogo.class)
-				.add(Restrictions.eq("cat_id_n", request.getCatIdN()))
-				.uniqueResult();
-		if(catalogo != null) {
-			catalogo.setCat_desc_str(request.getCatDescStr());
-			catalogo.setCat_est_str(request.getCatEstStr());
-		}
-		return "Proceso realizado";
-	}
-
+	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<CatalogoDet> getCatalogosDet(GeneralRequest request) {
+	public List<CatalogoDet> catalogoListByID(GeneralRequest request) {
 		return session.getCurrentSession().createCriteria(CatalogoDet.class)
-				.add(Restrictions.eq("cat_id_n", request.getCatIdN()))
+				.add(Restrictions.eq("cat_id_n", request.getIdPadre()))
+				.addOrder(Order.asc("catd_id_n"))
 				.list();
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public String saveCatalogoDet(GeneralRequest request) {
+	public void catalogoSave(GeneralRequest request) {
 		CatalogoDet catalogoDet = new CatalogoDet();
-		catalogoDet.setCat_id_n(request.getCatIdN());
-		catalogoDet.setCatd_cve_str(request.getCatDCveStr());
-		catalogoDet.setCatd_desc_str(request.getCatDescStr());
-		catalogoDet.setCatd_est_str(request.getCatEstStr());
+		catalogoDet.setCat_id_n(request.getIdPadre());
+		catalogoDet.setCatd_cve_str(request.getClave());
+		catalogoDet.setCatd_desc_str(request.getDesc());
+		catalogoDet.setCatd_est_str(request.getEstatus());
 		
 		session.getCurrentSession().save(catalogoDet);
-		
-		log.debug("catalogoDet:"+new Gson().toJson(catalogoDet));
-		
-	return "Proceso realizado";
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public String updateCatalogoDet(GeneralRequest request) {
-		CatalogoDet catalogoDet = (CatalogoDet) session.getCurrentSession().createCriteria(CatalogoDet.class)
-				.add(Restrictions.eq("catd_id_n", request.getCatDIdN() ))
-				.uniqueResult();
+	public void catalogoUpdate(GeneralRequest request) {
+		CatalogoDet catalogoDet = (CatalogoDet) session.getCurrentSession()
+								 .createCriteria(CatalogoDet.class)
+								 .add(Restrictions.eq("catd_id_n", request.getIdDetalle()))
+								 .uniqueResult();
 		if(catalogoDet != null) {
-			catalogoDet.setCat_id_n(request.getCatIdN());
-			catalogoDet.setCatd_cve_str(request.getCatDCveStr());
-			catalogoDet.setCatd_desc_str(request.getCatDescStr());
-			catalogoDet.setCatd_est_str(request.getCatEstStr());
+			catalogoDet.setCat_id_n(request.getIdPadre());
+			catalogoDet.setCatd_cve_str(request.getClave());
+			catalogoDet.setCatd_desc_str(request.getDesc());
+			catalogoDet.setCatd_est_str(request.getEstatus());
 		}
-		return "Proceso realizado";
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public String updateEstatusCatalogoDet(GeneralRequest request) {
-		CatalogoDet catalogoDet = (CatalogoDet) session.getCurrentSession().createCriteria(CatalogoDet.class)
-				.add(Restrictions.eq("catd_id_n", request.getCatDIdN() ))
-				.uniqueResult();
+	public void catalogoUpdateEstatus(GeneralRequest request) {
+		log.debug("request: " + new Gson().toJson(request) );
+		CatalogoDet catalogoDet = (CatalogoDet) session.getCurrentSession()
+								 .createCriteria(CatalogoDet.class)
+								 .add(Restrictions.eq("catd_id_n", request.getIdDetalle()))
+								 .uniqueResult();
+		log.debug("find: " + new Gson().toJson(catalogoDet) );
 		if(catalogoDet != null) {
-			catalogoDet.setCatd_est_str(request.getCatEstStr());
+			catalogoDet.setCatd_est_str(request.getEstatus());
 		}
-		return "Proceso realizado";
-	}
-	
-	
-	
-	
 
+		log.debug("update: " + new Gson().toJson(catalogoDet) );
+	}
+
+	
+	
 }

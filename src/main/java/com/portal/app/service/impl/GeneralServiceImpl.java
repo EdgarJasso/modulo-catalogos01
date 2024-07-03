@@ -27,104 +27,77 @@ public class GeneralServiceImpl implements GeneralService
 	@Autowired private GeneralDao dao;
 
 	@Override
-	public GeneralResponse getCatalogo(GeneralRequest request) {
-		log.info("getCatalogo" + new Gson().toJson(request));
+	public GeneralResponse catalogoList(GeneralRequest request) {
+		log.info("catalogoList:"+new Gson().toJson(request));
 		GeneralResponse response = new GeneralResponse();
-			try {
-				
-				response.setCatalogo(dao.getCatalogos(request));
-				
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
-				response.setStatus(ERROR);
-				response.setMessage(e.getMessage());
-			}
+		try {
+			response.setCatalogo(dao.catalogoList(request));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setStatus(ERROR);
+			response.setMessage(e.getMessage());
+		}
 		return response;
 	}
 
 	@Override
-	public GeneralResponse getCatalogoDet(GeneralRequest request) {
-		log.info("getCatalogoDet" + new Gson().toJson(request));
+	public GeneralResponse catalogoByIdList(GeneralRequest request) {
+		log.info("catalogoByIdList:"+new Gson().toJson(request));
 		GeneralResponse response = new GeneralResponse();
-			try {
-				
-				response.setCatalogoDet(dao.getCatalogosDet(request));
-				
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
-				response.setStatus(ERROR);
-				response.setMessage(e.getMessage());
-			}
+		try {
+			response.setCatalogoDet(dao.catalogoListByID(request));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setStatus(ERROR);
+			response.setMessage(e.getMessage());
+		}
 		return response;
 	}
 
 	@Override
-	public GeneralResponse saveCatalogoDet(GeneralRequest request) {
-		log.info("saveCatalogoDet" + new Gson().toJson(request));
+	public GeneralResponse catalogoSave(GeneralRequest request) {
+		log.info("catalogoSave:"+new Gson().toJson(request));
 		GeneralResponse response = new GeneralResponse();
-			try {
-				long catIdN = request.getCatIdN();
-				String catDescString =  request.getCatDescStr();
-				String catDCveStr = request.getCatDCveStr();
-				
-				if(catIdN > 0 && catDescString != null && catDCveStr != null) {
-					response.setMessage(dao.saveCatalogoDet(request));
-				}else {
-					response.setMessage(FALTAN_PARAMETROS);
-				}
-				
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
-				response.setStatus(ERROR);
-				response.setMessage(e.getMessage());
-			}
+		try {
+			dao.catalogoSave(request);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setStatus(ERROR);
+			response.setMessage(e.getMessage());
+		}
 		return response;
 	}
 
 	@Override
-	public GeneralResponse updateCatalogoDet(GeneralRequest request) {
-		log.info("updateCatalogoDet" + new Gson().toJson(request));
+	public GeneralResponse catalogoUpdate(GeneralRequest request) {
+		log.info("catalogoUpdate:"+new Gson().toJson(request));
 		GeneralResponse response = new GeneralResponse();
-			try {
-				long catIdN = request.getCatIdN();
-				long catDIdN = request.getCatDIdN();
-				String catDescString =  request.getCatDescStr();
-				String catDCveStr = request.getCatDCveStr();
-				
-				if(catIdN > 0 && catDIdN > 0 && catDescString != null && catDCveStr != null) {
-					response.setMessage(dao.updateCatalogoDet(request));
-				}else {
-					response.setMessage(FALTAN_PARAMETROS);
-				}
-				
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
-				response.setStatus(ERROR);
-				response.setMessage(e.getMessage());
-			}
+		try {
+			dao.catalogoUpdate(request);
+			response.setCatalogoDet(dao.catalogoListByID(request));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setStatus(ERROR);
+			response.setMessage(e.getMessage());
+		}
 		return response;
 	}
 
 	@Override
-	public GeneralResponse updateEstatusCatalogoDet(GeneralRequest request) {
-		log.info("updateEstatusCatalogoDet" + new Gson().toJson(request));
+	public GeneralResponse catalogoUpdateEstatus(GeneralRequest request) {
+		log.info("catalogoUpdateEstatus:"+new Gson().toJson(request));
 		GeneralResponse response = new GeneralResponse();
-			try {
-				long catDIdN = request.getCatDIdN();
-				
-				if(catDIdN > 0) {
-					response.setMessage(dao.updateEstatusCatalogoDet(request));
-				}else {
-					response.setMessage(FALTAN_PARAMETROS);
-				}
-				
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
-				response.setStatus(ERROR);
-				response.setMessage(e.getMessage());
-			}
+		try {
+			dao.catalogoUpdate(request);
+			response.setCatalogoDet(dao.catalogoListByID(request));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setStatus(ERROR);
+			response.setMessage(e.getMessage());
+		}
 		return response;
 	}
+
 	
 	
 }

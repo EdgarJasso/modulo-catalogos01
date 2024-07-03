@@ -24,52 +24,97 @@ import com.portal.app.util.Parser;
 
 @RestController
 @RequestMapping(value="/service",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class GeneralController 
-{
+public class GeneralController{
 	@Autowired	private GeneralService service;
 	
-	@PostMapping(value = "/getCatalogo")
-	public GeneralResponse getCatalogo(@RequestBody GeneralRequest request)
+	@PostMapping(value = "/general/list")
+	public  ResponseEntity<GeneralResponse> catalogoList(@RequestBody GeneralRequest request)
 	{
-		return request.getData()!=null ?
-		 new GeneralResponse(Parser.ENCODE(
-			service.getCatalogo(Parser.DECODE(request)))) :  
-			service.getCatalogo(request);
+		GeneralResponse response =  service.catalogoList(Parser.DECODE(request));
+		int status	= response.getStatus();
+		response = new GeneralResponse(Parser.ENCODE(response));
+		HttpStatus httpStatus = null;
+		switch (status) 
+		{
+			case OK: 			httpStatus = HttpStatus.OK;						break;
+			case BAD_REQUEST: 	httpStatus = HttpStatus.BAD_REQUEST;			break;
+			case CONFLICT:		httpStatus = HttpStatus.CONFLICT;				break;
+			case ERROR:			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;	break;
+			default:			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;	break;
+		}
+		return new ResponseEntity<GeneralResponse>(response,httpStatus);
 	}
 	
-	@PostMapping(value = "/getCatalogoDet")
-	public GeneralResponse getCatalogoDet(@RequestBody GeneralRequest request)
+	@PostMapping(value = "/general/detList")
+	public  ResponseEntity<GeneralResponse> catalogoByIdList(@RequestBody GeneralRequest request)
 	{
-		return request.getData()!=null ?
-		 new GeneralResponse(Parser.ENCODE(
-			service.getCatalogoDet(Parser.DECODE(request)))) :  
-			service.getCatalogoDet(request);
+		GeneralResponse response =  service.catalogoByIdList(Parser.DECODE(request));
+		int status	= response.getStatus();
+		response = new GeneralResponse(Parser.ENCODE(response));
+		HttpStatus httpStatus = null;
+		switch (status) 
+		{
+			case OK: 			httpStatus = HttpStatus.OK;						break;
+			case BAD_REQUEST: 	httpStatus = HttpStatus.BAD_REQUEST;			break;
+			case CONFLICT:		httpStatus = HttpStatus.CONFLICT;				break;
+			case ERROR:			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;	break;
+			default:			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;	break;
+		}
+		return new ResponseEntity<GeneralResponse>(response,httpStatus);
 	}
 	
-	@PostMapping(value = "/saveCatalogoDet")
-	public GeneralResponse saveCatalogoDet(@RequestBody GeneralRequest request)
+	@PostMapping(value = "/general/save")
+	public  ResponseEntity<GeneralResponse> catalogoSave(@RequestBody GeneralRequest request)
 	{
-		return request.getData()!=null ?
-		 new GeneralResponse(Parser.ENCODE(
-			service.saveCatalogoDet(Parser.DECODE(request)))) :  
-			service.saveCatalogoDet(request);
+		GeneralResponse response =  service.catalogoSave(Parser.DECODE(request));
+		int status	= response.getStatus();
+		response = new GeneralResponse(Parser.ENCODE(response));
+		HttpStatus httpStatus = null;
+		switch (status) 
+		{
+			case OK: 			httpStatus = HttpStatus.OK;						break;
+			case BAD_REQUEST: 	httpStatus = HttpStatus.BAD_REQUEST;			break;
+			case CONFLICT:		httpStatus = HttpStatus.CONFLICT;				break;
+			case ERROR:			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;	break;
+			default:			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;	break;
+		}
+		return new ResponseEntity<GeneralResponse>(response,httpStatus);
 	}
 	
-	@PostMapping(value = "/updateEstatusCatalogoDet")
-	public GeneralResponse updateEstatusCatalogoDet(@RequestBody GeneralRequest request)
+	@PostMapping(value = "/general/update")
+	public  ResponseEntity<GeneralResponse> catalogoUpdate(@RequestBody GeneralRequest request)
 	{
-		return request.getData()!=null ?
-		 new GeneralResponse(Parser.ENCODE(
-			service.updateEstatusCatalogoDet(Parser.DECODE(request)))) :  
-			service.updateEstatusCatalogoDet(request);
+		GeneralResponse response =  service.catalogoUpdate(Parser.DECODE(request));
+		int status	= response.getStatus();
+		response = new GeneralResponse(Parser.ENCODE(response));
+		HttpStatus httpStatus = null;
+		switch (status) 
+		{
+			case OK: 			httpStatus = HttpStatus.OK;						break;
+			case BAD_REQUEST: 	httpStatus = HttpStatus.BAD_REQUEST;			break;
+			case CONFLICT:		httpStatus = HttpStatus.CONFLICT;				break;
+			case ERROR:			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;	break;
+			default:			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;	break;
+		}
+		return new ResponseEntity<GeneralResponse>(response,httpStatus);
+	}
+
+	@PostMapping(value = "/general/updateEstatus")
+	public  ResponseEntity<GeneralResponse> catalogoUpdateEstatus(@RequestBody GeneralRequest request)
+	{
+		GeneralResponse response =  service.catalogoUpdateEstatus(Parser.DECODE(request));
+		int status	= response.getStatus();
+		response = new GeneralResponse(Parser.ENCODE(response));
+		HttpStatus httpStatus = null;
+		switch (status) 
+		{
+			case OK: 			httpStatus = HttpStatus.OK;						break;
+			case BAD_REQUEST: 	httpStatus = HttpStatus.BAD_REQUEST;			break;
+			case CONFLICT:		httpStatus = HttpStatus.CONFLICT;				break;
+			case ERROR:			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;	break;
+			default:			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;	break;
+		}
+		return new ResponseEntity<GeneralResponse>(response,httpStatus);
 	}
 	
-	@PostMapping(value = "/updateCatalogoDet")
-	public GeneralResponse updateCatalogoDet(@RequestBody GeneralRequest request)
-	{
-		return request.getData()!=null ?
-		 new GeneralResponse(Parser.ENCODE(
-			service.updateCatalogoDet(Parser.DECODE(request)))) :  
-			service.updateCatalogoDet(request);
-	}
 }

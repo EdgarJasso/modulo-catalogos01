@@ -4,43 +4,43 @@ public class GeneralRequest extends Request
 {
 	private static final long serialVersionUID = 1L;
 	
-	private long catIdN;
-	private long catDIdN;
-	private String catDCveStr;
-	private String catDescStr;
-	private String catEstStr;
+	private Long idDetalle;
+	private Long idPadre;
+	private String clave;
+	private String desc;
+	private String estatus;
 	
-	public long getCatIdN() {
-		return catIdN;
-	}
-	public void setCatIdN(long catIdN) {
-		this.catIdN = catIdN;
-	}
-	public long getCatDIdN() {
-		return catDIdN;
-	}
-	public void setCatDIdN(long catDIdN) {
-		this.catDIdN = catDIdN;
-	}
-	public String getCatDCveStr() {
-		return catDCveStr;
-	}
-	public void setCatDCveStr(String catDCveStr) {
-		this.catDCveStr = catDCveStr;
-	}
-	public String getCatDescStr() {
-		return catDescStr;
-	}
-	public void setCatDescStr(String catDescStr) {
-		this.catDescStr = catDescStr;
-	}
-	public String getCatEstStr() {
-		return catEstStr;
-	}
-	public void setCatEstStr(String catEstStr) {
-		this.catEstStr = catEstStr;
-	}
 	
+	public Long getIdDetalle() {
+		return idDetalle;
+	}
+	public void setIdDetalle(Long idDetalle) {
+		this.idDetalle = idDetalle;
+	}
+	public Long getIdPadre() {
+		return idPadre;
+	}
+	public void setIdPadre(Long idPadre) {
+		this.idPadre = idPadre;
+	}
+	public String getClave() {
+		return clave;
+	}
+	public void setClave(String clave) {
+		this.clave = clave;
+	}
+	public String getDesc() {
+		return desc;
+	}
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+	public String getEstatus() {
+		return estatus;
+	}
+	public void setEstatus(String estatus) {
+		this.estatus = estatus;
+	}
 	
 	
 }

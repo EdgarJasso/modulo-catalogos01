@@ -10,7 +10,7 @@
 </style>
 
 <script type="text/javascript">
-var $general = {};
+var $generalno = {};
 (function() 
 {
 	const $base = "general";

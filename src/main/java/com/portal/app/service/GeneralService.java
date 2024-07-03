@@ -7,10 +7,11 @@ import com.portal.app.response.GeneralResponse;
 
 public interface GeneralService{
 	
-	GeneralResponse getCatalogo (GeneralRequest request);
-	GeneralResponse getCatalogoDet (GeneralRequest request);
-	GeneralResponse saveCatalogoDet (GeneralRequest request);
-	GeneralResponse updateEstatusCatalogoDet(GeneralRequest request);
-	GeneralResponse updateCatalogoDet (GeneralRequest request);
+	GeneralResponse catalogoList 			(GeneralRequest request);
+	
+	GeneralResponse catalogoByIdList 		(GeneralRequest request);
+	GeneralResponse catalogoSave 			(GeneralRequest request);
+	GeneralResponse catalogoUpdate			(GeneralRequest request);
+	GeneralResponse catalogoUpdateEstatus 	(GeneralRequest request);
 	
 }
