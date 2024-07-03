@@ -14,16 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.portal.app.request.AppRequest;
 import com.portal.app.request.GeneralRequest;
-import com.portal.app.response.AppResponse;
 import com.portal.app.response.GeneralResponse;
-import com.portal.app.service.AppService;
 import com.portal.app.service.GeneralService;
 import com.portal.app.util.Parser;
 
 @RestController
-@RequestMapping(value="/service",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value="/service",produces=MediaType.APPLICATION_JSON_VALUE)
 public class GeneralController{
 	@Autowired	private GeneralService service;
 	
