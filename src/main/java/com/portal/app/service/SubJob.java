@@ -1,8 +1,8 @@
 package com.portal.app.service;
 
-import com.portal.app.dto.CodigoPostal;
+import com.portal.app.dto.CodPostal;
 
 public interface SubJob {
 
-	public void regitrarSocio(CodigoPostal cp);
+	public void regitrarSocio(CodPostal cp);
 }

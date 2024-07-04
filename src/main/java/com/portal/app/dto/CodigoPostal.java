@@ -8,8 +8,20 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NamedNativeQueries;
+import org.hibernate.annotations.NamedNativeQuery;
+
 @Entity
 @Table(name="CODIGO_POSTAL")
+@NamedNativeQueries({
+@NamedNativeQuery
+(
+	name = "GET_CP_VIEW_X",
+	query = "{ call PKG_PORTAL_CAT01.GET_CP_VIEW(?,:codigo, :estado, :mnpio)}",
+	callable = true,
+	resultClass = CodigoPostal.class
+)
+})
 public class CodigoPostal {
 
 	@Id

@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.portal.app.dao.CPDao;
+import com.portal.app.dto.CodPostal;
 import com.portal.app.dto.CodigoPostal;
 import com.portal.app.service.SubJob;
 
@@ -20,7 +21,7 @@ public class SubJobImpl implements SubJob{
 	
 	@Override
 	@Async("cpExecutor")
-	public void regitrarSocio(CodigoPostal cp) {
+	public void regitrarSocio(CodPostal cp) {
 		dao.registroCP(cp);
 	}
 }

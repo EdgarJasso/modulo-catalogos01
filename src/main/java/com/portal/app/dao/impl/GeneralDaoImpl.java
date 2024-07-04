@@ -5,13 +5,10 @@ import java.util.List;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.gson.Gson;
 import com.portal.app.dao.GeneralDao;
 import com.portal.app.dto.Catalogo;
 import com.portal.app.dto.CatalogoDet;
