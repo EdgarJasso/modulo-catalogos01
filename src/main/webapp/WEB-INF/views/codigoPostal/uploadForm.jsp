@@ -35,8 +35,7 @@ var $codigoPostal_uploadForm = {};
 			let response = data.response;
 			if(response.status == 200){
 				$dialog.close();
-				$portal.dialog.infoDismiss({message:" <span class='pcolor-red'>"
-					+response.message+" </span> " });
+				$portal.dialog.infoDismiss({message:response.message });
 			}
 		});
 	}

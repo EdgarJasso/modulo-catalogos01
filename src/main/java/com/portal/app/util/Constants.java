@@ -17,4 +17,8 @@ public class Constants
 	public static final int BAD_REQUEST							= 400;
 	public static final int CONFLICT							= 409;
 	public static final String FALTAN_PARAMETROS				= "Faltan parámetros de entrada";
+
+	public static final int	LIST								= 1;
+	
+
 }

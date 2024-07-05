@@ -16,9 +16,10 @@ import org.hibernate.annotations.NamedNativeQuery;
 @NamedNativeQuery
 (
 	name = "GET_CP_VIEW",
-	query = "{ call PKG_PORTAL_CAT01.GET_CP_VIEW(?,:codigo, :estado, :mnpio)}",
+	query = "{ call PKG_PORTAL_CAT01.GET_CP_VIEW(?,:codigo, :estado, :mnpio"
+												+ ",:sortBy,:order,:limit,:offset)}",
 	callable = true,
-	resultClass = CodigoPostal.class
+	resultClass = CodPostal.class
 )
 })
 public class CodPostal {

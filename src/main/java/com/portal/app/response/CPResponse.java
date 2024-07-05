@@ -4,7 +4,7 @@ import static com.portal.app.util.Constants.OK;
 
 import java.util.List;
 
-import com.portal.app.dto.CodigoPostal;
+import com.portal.app.dto.CodPostal;
 import com.portal.app.dto.Estado;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -16,19 +16,28 @@ public class CPResponse extends Response
 	private static final long serialVersionUID = 1L;
 
 	private List<Estado> estado;
-	private List<CodigoPostal> codigoPostal;
+	private Long total;
+	private List<CodPostal> codigoPostal;
 
+	
+
+	
 	public List<Estado> getEstado() {
 		return estado;
 	}
 	public void setEstado(List<Estado> estado) {
 		this.estado = estado;
 	}
-	
-	public List<CodigoPostal> getCodigoPostal() {
+	public Long getTotal() {
+		return total;
+	}
+	public void setTotal(Long total) {
+		this.total = total;
+	}
+	public List<CodPostal> getCodigoPostal() {
 		return codigoPostal;
 	}
-	public void setCodigoPostal(List<CodigoPostal> codigoPostal) {
+	public void setCodigoPostal(List<CodPostal> codigoPostal) {
 		this.codigoPostal = codigoPostal;
 	}
 	public CPResponse() { this.setStatus(OK);}

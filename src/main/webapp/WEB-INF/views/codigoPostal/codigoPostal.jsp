@@ -18,7 +18,7 @@ var $codigoPostal = {};
 	const nvaUsr = $portal.user.profile.nva_id_n;
 	const nvaMenu = $portal.menu.nva_id_n;
 
-
+	let filtro= { valido:false, total:null};
 
 	this.init = ()=> 
 	{	
@@ -45,8 +45,12 @@ var $codigoPostal = {};
 		$("#codigoPStr").focus();
 		
 		$codigoPostal.table = $("#table_"+$base);
-		$portal.system.setTable({table:$codigoPostal.table,toolbarButtons:toolbarButtons()});	
-		$("#btnBuscar").click(loadView);
+		$("#btnBuscar").click(onclickBuscar);
+		$portal.system.setTable({
+			table:$codigoPostal.table,
+			toolbarButtons:$codigoPostal.toolbarButtons()
+		});	
+		
 	}
 
 	function loadEstadosStore(){
@@ -77,47 +81,55 @@ var $codigoPostal = {};
 		$("#municipoStr").selectpicker({width:'100%'}); 
 	}
 
-	function loadView(){
-		$codigoPostal.table.setData([]);
-		let obj =  validar();
-		
-		if(obj.valido){
-			let loading = $portal.dialog.loading().open();
-			$portal.system.service
-			({	url:$base+"/view",
-				data: obj,
-				callback:function(r){	
-					$codigoPostal.table.setData(r.codigoPostal);
-				}
-			}).always(()=>{ loading.close(); });
-		}else{
-			$portal.dialog.warning(obj.messaage);
+	function onclickBuscar(){
+
+		filtro = {
+			codigoPStr : ($("#codigoPStr").val() != "")?$("#codigoPStr").val():"X",
+			estadoStr  : ($("#estadoStr").val() != "-1")?$("#estadoStr").val():"X",
+			mnpioStr   : ($("#mnpioStr").val() != "-1")?$("#mnpioStr").val():"X",
+			valido:		true,
+			total:		null
+		};
+
+		if(filtro.codigoPStr == "X" && filtro.estadoStr == "X"){
+			filtro.valido = false;
+			$portal.dialog.warning("Codigo Postal o Estado requerido.");
+			return false;
 		}
+
+		$portal.system.setTable
+		({	
+			table:$codigoPostal.table,
+			toolbarButtons:$codigoPostal.toolbarButtons(),
+			ajax:"$codigoPostal.ajaxRequest", 
+			sidePagination:'server'
+		});
 	}
 
-	function validar(){
-		let obj = {};
-			obj.codigoPStr = ($("#codigoPStr").val() != "")?$("#codigoPStr").val():"X";
-			obj.estadoStr  = ($("#estadoStr").val() != "-1")?$("#estadoStr").val():"X";
-			obj.mnpioStr   = ($("#mnpioStr").val() != "-1")?$("#mnpioStr").val():"X";
-			obj.valido	   = true;
-			obj.messaage   = null;
-
-		if(obj.codigoPStr == "X" && obj.estadoStr == "X"){ 
-			obj.valido = false;
-			obj.messaage = "Codigo Postal o Estado requerido" ;
-		}
+	this.ajaxRequest = (params)=>
+	{
+		let defaults={valido:false,pager : params};
+		let data = $.extend({},defaults,filtro);
 		
-		return obj;
-	}
+		if(!data.valido ){ $(".fixed-table-loading").html("");	return false;}
+		
+		let loading = $portal.dialog.loading().open();
+		$portal.system.service
+		({  
+			url:$base+"/view",data:data,
+			callback:(r)=>
+			{
+				let rows  = r.codigoPostal;
+				let total = r.total;
+				filtro.total = total;
+				params.success({ rows: rows, total:total });
+			}
+		}).always(()=>{ loading.close(); $portal.system.resetView(); });
+	};
+
 	
-	function toolbarButtons(){
+	this.toolbarButtons = function(){
 		return {
-			btnRefresh: 
-			{	icon:"fa-fw fa fa-refresh",
-				title:"Recargar datos",
-				//onclick:"$"+$base+".refreshData($(this))",
-			},
 			btnAdd: 
 			{	icon:"fa-fw fa fa-plus",
 				title:"Cargar csv sepomex",

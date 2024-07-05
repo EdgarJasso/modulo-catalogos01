@@ -57,9 +57,10 @@ public class CPController {
 	}
 
 	@PostMapping(value = "/codigoPostal/view")
-	public  ResponseEntity<CPResponse> cpView(@RequestBody CPRequest request)
-	{
-		CPResponse response =  service.codigoPostalList(request);
+	public  ResponseEntity<CPResponse> cpView(@RequestBody CPRequest request){
+		boolean encode = request.getData() != null ? true : false;
+
+		CPResponse response = service.codigoPostalList(encode ? Parser.DECODE(request):request);
 		int status	= response.getStatus();
 		response = new CPResponse(Parser.ENCODE(response));
 		HttpStatus httpStatus = null;
@@ -81,7 +82,7 @@ public class CPController {
 		
 		log.info("Subiendo layaout "+new Gson().toJson(request));
 		log.info("Request "+new Gson().toJson(request));
-		
+		Long register = 0L;
 		try
 		{
 			String fileName = file.getOriginalFilename();
@@ -99,8 +100,8 @@ public class CPController {
 				Files.copy(inputStream, destinationFile,StandardCopyOption.REPLACE_EXISTING);
 
 				log.info("Archivo subido: " + destinationFile );
-				service.loadCsv(destinationFile.toString());
-				response.setMessage("Archivo subido, procesando");
+				register = service.loadCsv(destinationFile.toString());
+				response.setMessage("Archivo subido, <span class='pcolor-red'> "+register+" datos procesados</span>");
 			
 			}catch(Exception e){
 				log.error(e.getMessage(), e);
