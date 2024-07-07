@@ -10,4 +10,6 @@ public interface CPService{
 	CPResponse codigoPostalList(CPRequest request);
 	CPResponse getCPData(CPRequest request);
 
+	CPResponse codigoSaveOrUpdate(CPRequest request);
+	CPResponse codigoDelete(CPRequest request);
 }

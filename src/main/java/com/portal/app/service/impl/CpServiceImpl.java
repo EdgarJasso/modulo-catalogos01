@@ -17,7 +17,6 @@ import com.portal.app.request.CPRequest;
 import com.portal.app.response.CPResponse;
 import com.portal.app.service.CPService;
 import com.portal.app.service.Job;
-import com.portal.app.util.Constants;
 
 
 @Service
@@ -81,6 +80,34 @@ public class CpServiceImpl implements CPService
 		CPResponse response = new CPResponse();
 		try {
 			response.setCpData(dao.getCPData(request));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setStatus(ERROR);
+			response.setMessage(e.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public CPResponse codigoSaveOrUpdate(CPRequest request) {
+		log.info("codigoSaveOrUpdate:"+new Gson().toJson(request));
+		CPResponse response = new CPResponse();
+		try {
+			dao.codigoSaveOrUpdate(request);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setStatus(ERROR);
+			response.setMessage(e.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public CPResponse codigoDelete(CPRequest request) {
+		log.info("codigoDelete:"+new Gson().toJson(request));
+		CPResponse response = new CPResponse();
+		try {
+			dao.codigoDelete(request);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			response.setStatus(ERROR);

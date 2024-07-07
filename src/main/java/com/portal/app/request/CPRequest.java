@@ -1,5 +1,9 @@
 package com.portal.app.request;
 
+import java.util.Date;
+
+import javax.persistence.Column;
+
 import com.portal.app.domain.Pager;
 
 public class CPRequest extends Request
@@ -12,6 +16,16 @@ public class CPRequest extends Request
 	private String codigoPStr;
 	private String estadoStr;
 	private String mnpioStr;
+
+	private String	cpKeyStr;
+	private String  cpCodigoStr;
+	private String  cpCveEstadoStr;
+	private String  cpCveMnpioStr;
+	private String  cpIdAsentaCpconsStr;
+	private String  cpCveCiudadStr;
+	private String  cpAsentaStr;
+	private String  cpMnpioStr;
+	private String  cpCiudadStr;
 	
 	
 	public Pager getPager() {
@@ -50,7 +64,62 @@ public class CPRequest extends Request
 	public void setMnpioStr(String mnpioStr) {
 		this.mnpioStr = mnpioStr;
 	}
+	public String getCpKeyStr() {
+		return cpKeyStr;
+	}
+	public void setCpKeyStr(String cpKeyStr) {
+		this.cpKeyStr = cpKeyStr;
+	}
+	public String getCpCodigoStr() {
+		return cpCodigoStr;
+	}
+	public void setCpCodigoStr(String cpCodigoStr) {
+		this.cpCodigoStr = cpCodigoStr;
+	}
+	public String getCpCveEstadoStr() {
+		return cpCveEstadoStr;
+	}
+	public void setCpCveEstadoStr(String cpCveEstadoStr) {
+		this.cpCveEstadoStr = cpCveEstadoStr;
+	}
+	public String getCpCveMnpioStr() {
+		return cpCveMnpioStr;
+	}
+	public void setCpCveMnpioStr(String cpCveMnpioStr) {
+		this.cpCveMnpioStr = cpCveMnpioStr;
+	}
+	public String getCpIdAsentaCpconsStr() {
+		return cpIdAsentaCpconsStr;
+	}
+	public void setCpIdAsentaCpconsStr(String cpIdAsentaCpconsStr) {
+		this.cpIdAsentaCpconsStr = cpIdAsentaCpconsStr;
+	}
+	public String getCpCveCiudadStr() {
+		return cpCveCiudadStr;
+	}
+	public void setCpCveCiudadStr(String cpCveCiudadStr) {
+		this.cpCveCiudadStr = cpCveCiudadStr;
+	}
+	public String getCpAsentaStr() {
+		return cpAsentaStr;
+	}
+	public void setCpAsentaStr(String cpAsentaStr) {
+		this.cpAsentaStr = cpAsentaStr;
+	}
+	public String getCpMnpioStr() {
+		return cpMnpioStr;
+	}
+	public void setCpMnpioStr(String cpMnpioStr) {
+		this.cpMnpioStr = cpMnpioStr;
+	}
+	public String getCpCiudadStr() {
+		return cpCiudadStr;
+	}
+	public void setCpCiudadStr(String cpCiudadStr) {
+		this.cpCiudadStr = cpCiudadStr;
+	}
 
+	
 	
 	
 	

@@ -102,4 +102,39 @@ public class CPDaoImpl implements CPDao{
 		.list();
 	}
 
+	@Override
+	@Transactional(readOnly = false)
+	public void codigoSaveOrUpdate(CPRequest request) {
+		CodPostal cp = (CodPostal) session.getCurrentSession()
+						.createCriteria(CodPostal.class)
+						.add(Restrictions.eq("cp_key_str", request.getCpKeyStr()))
+						.uniqueResult();
+		if(cp != null){
+			cp.setCp_key_str(request.getCpKeyStr());
+			cp.setD_codigo(request.getCpCodigoStr());
+			cp.setC_estado(request.getCpCveEstadoStr());
+			cp.setC_mnpio(request.getCpCveMnpioStr());
+			cp.setId_asenta_cpcons(request.getCpIdAsentaCpconsStr());
+			cp.setC_cve_ciudad(request.getCpCveCiudadStr());
+			cp.setD_asenta(request.getCpAsentaStr());
+			cp.setD_mnpio(request.getCpMnpioStr());
+			cp.setD_ciudad(request.getCpCiudadStr());
+			cp.setCp_freg_dt(new Date());
+		}}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void codigoDelete(CPRequest request) {
+		CodPostal cp = (CodPostal) session.getCurrentSession()
+						.createCriteria(CodPostal.class)
+						.add(Restrictions.eq("cp_key_str", request.getCpKeyStr()))
+						.uniqueResult();
+			log.debug("cp find: "+new Gson().toJson(cp));
+		if(cp != null){
+			session.getCurrentSession().delete(cp);
+			log.debug("cp delete");
+		}
+
+	}
+
 }

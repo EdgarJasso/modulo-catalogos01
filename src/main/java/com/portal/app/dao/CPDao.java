@@ -14,4 +14,7 @@ public interface CPDao{
 	public List<CodPostal> codigoPostalList(CPRequest request);
 	public List<RsCPData> getCPData(CPRequest request);
 
+	public void codigoSaveOrUpdate(CPRequest request);
+	public void codigoDelete(CPRequest request);
+
 }

@@ -16,18 +16,19 @@
 	    	data-height			= "350"
 	  		data-min-height		= "350"
 	  		data-height-vh		= "40"
-	  		data-unique-id 		= "id_n"
+	  		data-unique-id 		= "cp_key_str"
 			>
 		<thead>	
 			<tr>	
-				<th data-field="id_n" 	data-align="center" data-width=70 
+				<th data-field="cp_key_str" 	data-align="center" data-width=70 
 					data-visible=false data-sortable=true>Id</th>
 				<th data-field="d_codigo" 		data-sortable=true>Codigo</th>
 				<th data-field="d_asenta"   	data-sortable=true>Colonia</th>
 				<th data-field="d_ciudad"  		data-sortable=true>Ciudad</th>
 				<th data-field="c_estado"   	data-sortable=true>Estado</th>
 				<th data-field="c_mnpio"   		data-sortable=true>Munucipio</th>
-				<th data-field="c_cve_ciudad"   data-sortable=true>Clave</th>
+				<th data-field="c_cve_ciudad"   data-sortable=true>Clave</th>  
+				<th data-formatter="$codigoPostal.optionsFormatter" data-width=50 data-align="center">Acciones</th>
 			</tr>
 		</thead>
 	</table>

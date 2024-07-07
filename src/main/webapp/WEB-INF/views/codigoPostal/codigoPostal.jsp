@@ -14,13 +14,14 @@ var $codigoPostal = {};
 
 	const P_CREATE = $portal.menu.permiso.eval("CREATE");
 	const P_UPDATE = $portal.menu.permiso.eval("UPDATE");
+	const P_DELETE = $portal.menu.permiso.eval("DELETE");
 	
 	const nvaUsr = $portal.user.profile.nva_id_n;
 	const nvaMenu = $portal.menu.nva_id_n;
 
 	let filtro= { valido:false, total:null};
 
-	this.init = ()=> 
+	this.init = ()=>  
 	{	
 		app.loading = $portal.dialog.loading().open();
 		
@@ -79,6 +80,10 @@ var $codigoPostal = {};
 		$("#municipoStr").empty();
 		$("#municipoStr").html('<option value="-1"> - ToDo - </option>');
 		$("#municipoStr").selectpicker({width:'100%'}); 
+	}
+
+	this.buscarCP = ()=>{
+		onclickBuscar();
 	}
 
 	function onclickBuscar(){
@@ -140,10 +145,70 @@ var $codigoPostal = {};
 		};
 	}
 
+	this.optionsFormatter = function(value,row)
+	{	
+		let id = row.cp_key_str;
+		let controller = "$"+$base+".controller";
+		
+		let showEditar    = P_UPDATE ? true:false;
+		let showEliminar  = P_DELETE ? true:false;
+
+		let options =
+		{ label: value==undefined? "<i class='fa fa-list-ul'></i>": " Acciones ",
+		  hint:"Acciones",
+		  items:[ {	label:"Editar", 
+			  		icon:"fa fa-pencil-square-o pcolor-blue",
+			  		onClick:controller+ "('" + id + "', 1)",
+			  		permission: "UPDATE",
+			  		show:showEditar
+			      },
+				  {	label:"Eliminar", 
+			  		icon:"fa fa-ban pcolor-red",
+			  		onClick:controller+ "('" + id + "', 2)",
+			  		permission: "DELETE",
+			  		show:showEliminar
+			      }
+			      
+		        ] 
+		};
+		return $portal.system.createDropDownMenu(options);
+	};
+
+	this.controller = (id, opt )=>{
+		switch(opt){
+			case 1: updateCP(id);	break;
+			case 2: deleteCP(id);	break;
+		}
+	};
+
 	this.showAdd = function(btn){
 		$portal.system.blockButton(btn);	
 		$portal.system.loadForm({url:$base+"/uploadForm"});
 	};
+
+	function updateCP(id){		
+		$portal.system.loadForm({
+			data:{id:id},
+			url:$base+"/updateForm"
+		});
+	}
+
+
+	function deleteCP(id,estatus)
+	{
+		let loading = $portal.dialog.loading().open();
+		$portal.system.service
+		({	url:$base+"/codigoDelete",
+			data:{ cpKeyStr:id},
+			encoded:false,
+			callback:function(r){
+				if(r.status == 200){
+					$portal.dialog.infoDismiss({message:"Codigo Postal: <span class='pcolor-red'> Eliminado</span>"});
+					onclickBuscar();
+				}
+			}
+		}).always(()=>{ loading.close(); });
+	}
 	
 	
 }).apply($codigoPostal);
