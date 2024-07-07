@@ -16,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.gson.Gson;
 import com.portal.app.dao.CPDao;
 import com.portal.app.dto.CodPostal;
-import com.portal.app.dto.CodigoPostal;
 import com.portal.app.dto.Estado;
+import com.portal.app.dto.RsCPData;
 import com.portal.app.request.CPRequest;
 import com.portal.app.service.QueryBuilder;
 @Repository
@@ -94,8 +94,12 @@ public class CPDaoImpl implements CPDao{
 		.list();
 	}
 
-	
-	
-	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<RsCPData> getCPData(CPRequest request) {
+		return session.getCurrentSession().getNamedQuery("GET_CP_DATA")
+		.setParameter("codigo", request.getCodigoPStr())
+		.list();
+	}
 
 }

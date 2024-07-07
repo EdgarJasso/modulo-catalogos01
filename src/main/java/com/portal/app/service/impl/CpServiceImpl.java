@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.portal.app.dao.CPDao;
 import com.portal.app.dto.CodPostal;
-import com.portal.app.dto.CodigoPostal;
 import com.portal.app.request.CPRequest;
 import com.portal.app.response.CPResponse;
 import com.portal.app.service.CPService;
@@ -68,6 +67,20 @@ public class CpServiceImpl implements CPService
 			response.setTotal(total);
 			response.setCodigoPostal(resulset);
 
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setStatus(ERROR);
+			response.setMessage(e.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public CPResponse getCPData(CPRequest request) {
+		log.info("getCPData");
+		CPResponse response = new CPResponse();
+		try {
+			response.setCpData(dao.getCPData(request));
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			response.setStatus(ERROR);

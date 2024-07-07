@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.portal.app.dto.CodPostal;
 import com.portal.app.dto.Estado;
-
+import com.portal.app.dto.RsCPData;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -18,10 +18,8 @@ public class CPResponse extends Response
 	private List<Estado> estado;
 	private Long total;
 	private List<CodPostal> codigoPostal;
+	private List<RsCPData> cpData;
 
-	
-
-	
 	public List<Estado> getEstado() {
 		return estado;
 	}
@@ -39,6 +37,12 @@ public class CPResponse extends Response
 	}
 	public void setCodigoPostal(List<CodPostal> codigoPostal) {
 		this.codigoPostal = codigoPostal;
+	}
+	public List<RsCPData> getCpData() {
+		return cpData;
+	}
+	public void setCpData(List<RsCPData> cpData) {
+		this.cpData = cpData;
 	}
 	public CPResponse() { this.setStatus(OK);}
 	public CPResponse(String data){super(data); }

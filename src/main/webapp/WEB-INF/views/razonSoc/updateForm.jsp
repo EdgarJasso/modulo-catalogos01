@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script type="text/javascript">
-var $razonSoc_addForm = {};
+var $razonSoc_updateForm = {};
 (function(){
 	
 	const $base = "razonSoc";
 	const $dialog = app.dialog;
+    const $rowId = '${object.id}'; 
+	const $row = $razonSoc.table.getRow($rowId);
+
 	let rfcValid = false;
     let rowMap = {};
 
@@ -14,12 +17,13 @@ var $razonSoc_addForm = {};
 	{
 		let loading = $portal.dialog.loading().open();
 		$portal.system.service
-		({	url:$base+"/save",
+		({	url:$base+"/update",
 			data: obj,
 			callback:function(response){	
 				if(response.status == 200){
-                    $portal.dialog.infoDismiss({message:"Razón Social: <span class='pcolor-red'>"+obj.rsNombreStr+" - "+obj.rsRfcStr+"</span> registrada"});
+                    $portal.dialog.infoDismiss({message:"Razón Social: <span class='pcolor-red'>"+obj.rsNombreStr+" - "+obj.rsRfcStr+"</span> actulizada"});
                     $dialog.close();
+                    $razonSoc.loadData();
 			    }
 			},onError:(r)=>{ 
                 console.log(r);
@@ -33,7 +37,8 @@ var $razonSoc_addForm = {};
 	}
 	
 	function validar(){
-		let form = $("#form_addRazonSoc");
+        console.log("validar");
+		let form = $("#form_updateRazonSoc");
 		$portal.system.cleanForm( form );
 		
 		let objToFocus = null;
@@ -111,6 +116,7 @@ var $razonSoc_addForm = {};
         $("#rsEdoStr").val(row.edo_desc_str);
         $("#rsCiudadStr").val(row.c_m_str);
         $("#rsMnpioStr").val(row.c_m_str);
+        
     } 
 	
     $.fn.rfcValidate = function() {
@@ -134,8 +140,24 @@ var $razonSoc_addForm = {};
             return this; 
         };
 
+    function llenarCampos(){
+        console.log($row);
+
+        $("#rsNombreStr").val($row.rs_nombre_str);
+        $("#rsRfcStr").val($row.rs_rfc_str).trigger('input');;
+        $("#rsCpStr").val($row.rs_cp_str);
+        $("#rsPaisStr").val($row.pais_desc_str);
+        $("#rsEdoStr").val($row.edo_desc_str);
+        $("#rsCiudadStr").val($row.rs_ciudad_str);
+        $("#rsMnpioStr").val($row.rs_ciudad_str);
+        $("#rsCalleStr").val($row.rs_calle_str);
+        $("#rsNumExtStr").val($row.rs_num_ext_str);
+        $("#rsNumIntStr").val($row.rs_num_int_str);
+        $("#rsEstStr").val($row.rs_est_str);
+    }
+
 	this.init = ()=>{
-		$dialog.setTitle('Registrar nueva razón social');
+		$dialog.setTitle('Actualizar razón social');
 		$dialog.getButton("btnOK").hide();
 		$dialog.getButton("btnCANCEL").hide();
 		$(".modal-footer").hide();
@@ -148,25 +170,33 @@ var $razonSoc_addForm = {};
         try{ $("#rsGiroN").selectpicker('destroy');  }catch(e){}
 		$("#rsGiroN").selectpicker({width:'100%'}); 
 
+        $portal.system.setSelect({slt:$("#rsAsentaStr"),store: [] ,selectpicker:true,defaultOption:true});
+
         $('#rsRfcStr').rfcValidate();
+        
 		try{ $("#rsEstStr").selectpicker('destroy');  }catch(e){}
 		$("#rsEstStr").selectpicker({width:'100%'});
 
 		setTimeout( ()=>{ $("#rsNombreStr").focus(); },500);
 		
         $("#btnBuscarCP").click(getCPData);
+
+        llenarCampos();
 		
-        $("#f_btnSave").off("click");
-		$("#f_btnSave").click((e)=>{
+        $("#f_btnUpdate").off("click");
+		$("#f_btnUpdate").click((e)=>{
+            console.log("lol dude");
             e.preventDefault(); 
-			let obj = $.extend(true, {}, validar(), extObj);
-            if( obj.valido && rfcValid ) ejecutar(obj);
+            let obj = validar();
+            console.log(obj);
+			let obj_ = $.extend(true, {}, obj, extObj);
+            if( obj.valido && rfcValid ) ejecutar(obj_);
 		});
 	};
-}).apply($razonSoc_addForm);
-$(document).ready($razonSoc_addForm.init);
+}).apply($razonSoc_updateForm);
+$(document).ready($razonSoc_updateForm.init);
 </script>
-<form id="form_addRazonSoc" class="form-horizontal panel-body">
+<form id="form_updateRazonSoc" class="form-horizontal panel-body">
     <div class="form-group">
         <label class="col-xs-12 col-sm-3 control-label">
             <span class="text-error"><i class="fa fa-asterisk ast-required"></i></span> 
@@ -303,8 +333,8 @@ $(document).ready($razonSoc_addForm.init);
 
     <div class="form-group" style="padding-right: 15px;">
         <div class="col-xs-12 col-sm-4 col-sm-offset-8">
-            <button id="f_btnSave" class="btn btn-primary form-control"> 
-                Registrar
+            <button id="f_btnUpdate" class="btn btn-primary form-control"> 
+                Actualizar
             </button>
         </div>
     </div>

@@ -8,5 +8,6 @@ public interface CPService{
 	
 	CPResponse estadoList();
 	CPResponse codigoPostalList(CPRequest request);
+	CPResponse getCPData(CPRequest request);
 
 }

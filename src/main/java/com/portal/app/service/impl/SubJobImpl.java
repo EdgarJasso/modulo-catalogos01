@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import com.portal.app.dao.CPDao;
 import com.portal.app.dto.CodPostal;
-import com.portal.app.dto.CodigoPostal;
 import com.portal.app.service.SubJob;
 
 @Component
