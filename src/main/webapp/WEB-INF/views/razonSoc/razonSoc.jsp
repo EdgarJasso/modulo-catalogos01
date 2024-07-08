@@ -23,8 +23,11 @@
 	{	
 		app.loading = $portal.dialog.loading().open();
 		
-		$.when( $portal.system.getForm({url:$base+"/filtro"}),
+		$.when( 
+				$portal.system.getForm({url:$base+"/filtro"}),
 				$portal.system.getForm({url:$base+"/table"}),
+				getTipoStore(),
+				getGiroStore()
 		).done((filtroTemplate,tableTemplate)=>{
 			$("#divFiltro").html(filtroTemplate[0]);
 			$("#divTableContainer").html(tableTemplate[0]);
@@ -33,14 +36,11 @@
 	};
 
     function initMenu(){
-		getTipoStore();
-		getGiroStore();
-	
-		$razonSoc.table = $("#table_"+$base);
-		$portal.system.setTable({table:$razonSoc.table,toolbarButtons:toolbarButtons()});	
-		$("#btnBuscar").click($razonSoc.loadData);
 
-		setTimeout( ()=>{ 
+		$razonSoc.table = $("#table_"+$base);
+			$portal.system.setTable({table:$razonSoc.table,toolbarButtons:toolbarButtons()});	
+			$("#btnBuscar").click($razonSoc.loadData);
+
 			$("#f_tipo").html($razonSoc.tipoOptions);
 			try{ $("#f_tipo").selectpicker('destroy');  }catch(e){}
 			$("#f_tipo").selectpicker({width:'100%'}); 
@@ -48,7 +48,7 @@
 			$("#f_giro").html($razonSoc.giroOptions);
 			try{ $("#f_giro").selectpicker('destroy');  }catch(e){}
 			$("#f_giro").selectpicker({width:'100%'}); 
-		},1500);
+	
 	}
 
     function toolbarButtons(){
