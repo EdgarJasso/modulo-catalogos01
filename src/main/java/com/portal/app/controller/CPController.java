@@ -81,7 +81,7 @@ public class CPController {
 
 		CPResponse response = service.getCPData(encode ? Parser.DECODE(request):request);
 		int status	= response.getStatus();
-		response = new CPResponse(Parser.ENCODE(response));
+		response = new CPResponse(Parser.ENCODE(response)); //
 		HttpStatus httpStatus = null;
 		switch (status) 
 		{
